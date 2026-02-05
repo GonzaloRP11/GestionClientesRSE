@@ -1,17 +1,10 @@
 import java.util.Scanner;
-import com.google.gson.*;
-import java.io.FileReader;
-import java.io.FileNotFoundException;
 
 public class app {
     private static GestorClientes gestor = new GestorClientes();
     private static Scanner scanner = new Scanner(System.in);
-    public static void Main ()
+    public static void main ()
     {
-        //Carga inicial de json
-        cargarJson();
-
-        //Mostrar menú de gestión
         boolean salir = false;
         int opcion;
         while (!salir) {
@@ -63,21 +56,6 @@ public class app {
             }
         }
     }
-
-    private static void cargarJson()
-    {
-        Gson gson = new Gson();
-        try{
-            FileReader fileReader = new FileReader("src/clientes.json");
-            Persona persona = gson.fromJson(fileReader, Persona.class);
-            System.out.println(persona.toString());
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    
 
     private static void menuAlta()
     {
