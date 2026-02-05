@@ -1,3 +1,5 @@
+package org.example;
+
 public class ListaDinamica<T> {  // linked list
 
     private Nodo<T> primero;

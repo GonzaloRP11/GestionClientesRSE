@@ -1,3 +1,5 @@
+package org.example;
+
 public class GestorClientes {
     private ListaDinamica<Cliente> clientes;
     private HistorialAcciones historial;

@@ -1,3 +1,5 @@
+package org.example;
+
 public class Accion {
     private String tipo;
     private String detalle;

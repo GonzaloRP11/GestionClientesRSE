@@ -1,4 +1,4 @@
-import java.util.Arrays;
+package org.example;
 
 public class Cliente {
     private String nombre;

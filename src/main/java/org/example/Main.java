@@ -1,16 +1,16 @@
-import java.util.Scanner;
-import com.google.gson.*;
-import java.io.FileReader;
-import java.io.FileNotFoundException;
+package org.example;
 
-public class app {
+import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
+
+public class Main {
     private static GestorClientes gestor = new GestorClientes();
     private static Scanner scanner = new Scanner(System.in);
-    public static void Main ()
+    public static void main(String[] args)
     {
         //Carga inicial de json
-        cargarJson();
-
+        System.out.println("Iniciando aplicación - Sistema de Gestión de Clientes");
         //Mostrar menú de gestión
         boolean salir = false;
         int opcion;
@@ -27,6 +27,11 @@ public class app {
             System.out.println("========================================");
             try {
                 System.out.print("Seleccione una opción: ");
+                if (!scanner.hasNextInt()) {
+                    System.out.println("Error: Por favor, ingrese un número válido.");
+                    scanner.nextLine();
+                    continue;
+                }
                 opcion = scanner.nextInt();
                 scanner.nextLine();
                 switch (opcion) {
@@ -58,34 +63,30 @@ public class app {
                     default:
                         System.out.println("Ocurrió un error: Opción no válida.");
                 }
-            } catch (Exception e) {
-                System.out.println("Error: Por favor, ingrese un número válido.");
+            } catch (NoSuchElementException e) {
+                System.out.println("Entrada finalizada inesperadamente. Saliendo.");
+                break;
             }
         }
     }
 
-    private static void cargarJson()
-    {
-        Gson gson = new Gson();
-        try{
-            FileReader fileReader = new FileReader("src/clientes.json");
-            Persona persona = gson.fromJson(fileReader, Persona.class);
-            System.out.println(persona.toString());
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    
 
     private static void menuAlta()
     {
 
         System.out.println("Nombre: ");
+        if (!scanner.hasNextLine()) {
+            System.out.println("Entrada no disponible. Volviendo al menú.");
+            return;
+        }
         String nombre = scanner.nextLine();
 
         System.out.println("Puntaje(0-100): ");
+        if (!scanner.hasNextInt()) {
+            System.out.println("Puntaje inválido. Volviendo al menú.");
+            scanner.nextLine();
+            return;
+        }
         int puntaje = scanner.nextInt();
         scanner.nextLine();
         

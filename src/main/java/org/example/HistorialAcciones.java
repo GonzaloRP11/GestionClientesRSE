@@ -1,3 +1,5 @@
+package org.example;
+
 public class HistorialAcciones {
     private Pila<Accion> acciones;
 
