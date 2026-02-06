@@ -18,12 +18,15 @@ public class Main {
             System.out.println("\n========================================");
             System.out.println("       SISTEMA DE GESTIÓN DE CLIENTES    ");
             System.out.println("========================================");
-            System.out.println("1. Alta de Cliente (Registrar)");
-            System.out.println("2. Baja de Cliente (Eliminar)");
-            System.out.println("3. Seguir Cliente (Añadir conexión)");
-            System.out.println("4. Búsqueda de Cliente (Por Nombre)");
-            System.out.println("5. Ver Ranking de Clientes (Por Scoring)");
-            System.out.println("6. Salir del sistema");
+            System.out.println("1. Alta de Cliente");
+            System.out.println("2. Baja de Cliente");
+            System.out.println("3. Enviar Solicitud de Seguimiento (Cola)");
+            System.out.println("4. Procesar Siguiente Solicitud");
+            System.out.println("5. Búsqueda de Cliente (Por Nombre)");
+            System.out.println("6. Búsqueda de Cliente (Por Scoring)");
+            System.out.println("7. Deshacer Última Acción (Undo)");
+            System.out.println("8. Ver Lista de Clientes");
+            System.out.println("9. Salir");
             System.out.println("========================================");
             try {
                 System.out.print("Seleccione una opción: ");
@@ -36,27 +39,56 @@ public class Main {
                 scanner.nextLine();
                 switch (opcion) {
                     case 1:
-                        System.out.println("--> Iniciando proceso de Alta...");
                         menuAlta();
-                        System.out.println("--> Impresión  de Alta...");
-                        gestor.imprimirLista();
                         break;
                     case 2:
                         System.out.print("Nombre del cliente a dar de baja: ");
                         String nombreBaja = scanner.nextLine();
+                        gestor.eliminarCliente(nombreBaja);
                         break;
                     case 3:
-                        System.out.println("--> Gestión de Seguimientos...");
+                        System.out.print("Nombre del cliente origen: ");
+                        String origen = scanner.nextLine();
+                        System.out.print("Nombre del cliente destino: ");
+                        String destino = scanner.nextLine();
+                        gestor.enviarSolicitudSeguimiento(origen, destino);
                         break;
                     case 4:
-                        System.out.print("Ingrese el nombre a buscar: ");
-                        String nombreBusca = scanner.nextLine();
+                        gestor.procesarSolicitudSeguimiento();
                         break;
                     case 5:
-                        System.out.println("--> Generando reporte de Scoring...");
-                        // gestor.imprimirRanking();
+                        System.out.print("Ingrese el nombre a buscar: ");
+                        String nombreBusca = scanner.nextLine();
+                        Cliente encontradoNom = gestor.buscarPorNombre(nombreBusca);
+                        if (encontradoNom != null) {
+                            System.out.println(encontradoNom);
+                        } else {
+                            System.out.println("Cliente no encontrado.");
+                        }
                         break;
                     case 6:
+                        System.out.print("Ingrese el scoring a buscar: ");
+                        if (scanner.hasNextInt()) {
+                            int scoringBusca = scanner.nextInt();
+                            scanner.nextLine();
+                            ListaDinamica<Cliente> encontradosSc = gestor.buscarPorScoring(scoringBusca);
+                            if (encontradosSc.getContador() > 0) {
+                                encontradosSc.imprimirLista();
+                            } else {
+                                System.out.println("No hay clientes con ese scoring.");
+                            }
+                        } else {
+                            System.out.println("Scoring inválido.");
+                            scanner.nextLine();
+                        }
+                        break;
+                    case 7:
+                        gestor.deshacerUltimaAccion();
+                        break;
+                    case 8:
+                        gestor.imprimirLista();
+                        break;
+                    case 9:
                         salir = true;
                         System.out.println("Saliendo del sistema.");
                         break;
