@@ -32,4 +32,12 @@ public class Pila <T>{
     public boolean estaVacia() {
         return cima == null;
     }
+
+    public void mostrarElementos() {
+        Nodo<T> actual = cima;
+        while (actual != null) {
+            System.out.println(actual.getElemento());
+            actual = actual.getSiguiente();
+        }
+    }
 }

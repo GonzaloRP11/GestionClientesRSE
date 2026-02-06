@@ -11,10 +11,38 @@ public class HistorialAcciones {
         acciones.apilar(new Accion(tipo, detalle));
     }
 
-    public Accion deshacerAccion() {
-        if (!acciones.estaVacia()) {
-            return acciones.desapilar();
+        public Accion deshacerAccion() {
+
+            if (!acciones.estaVacia()) {
+
+                return acciones.desapilar();
+
+            }
+
+            return null;
+
         }
-        return null;
+
+    
+
+        public void mostrarHistorial() {
+
+            if (acciones.estaVacia()) {
+
+                System.out.println("No hay acciones registradas en el historial.");
+
+            } else {
+
+                System.out.println("\n--- HISTORIAL COMPLETO DE ACCIONES ---");
+
+                acciones.mostrarElementos();
+
+                System.out.println("--------------------------------------");
+
+            }
+
+        }
+
     }
-}
+
+    

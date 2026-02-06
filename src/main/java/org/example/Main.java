@@ -26,7 +26,8 @@ public class Main {
             System.out.println("6. Búsqueda de Cliente (Por Scoring)");
             System.out.println("7. Deshacer Última Acción (Undo)");
             System.out.println("8. Ver Lista de Clientes");
-            System.out.println("9. Salir");
+            System.out.println("9. Ver Historial de Acciones");
+            System.out.println("10. Salir");
             System.out.println("========================================");
             try {
                 System.out.print("Seleccione una opción: ");
@@ -40,11 +41,13 @@ public class Main {
                 switch (opcion) {
                     case 1:
                         menuAlta();
+                        esperarRegreso();
                         break;
                     case 2:
                         System.out.print("Nombre del cliente a dar de baja: ");
                         String nombreBaja = scanner.nextLine();
                         gestor.eliminarCliente(nombreBaja);
+                        esperarRegreso();
                         break;
                     case 3:
                         System.out.print("Nombre del cliente origen: ");
@@ -52,9 +55,11 @@ public class Main {
                         System.out.print("Nombre del cliente destino: ");
                         String destino = scanner.nextLine();
                         gestor.enviarSolicitudSeguimiento(origen, destino);
+                        esperarRegreso();
                         break;
                     case 4:
                         gestor.procesarSolicitudSeguimiento();
+                        esperarRegreso();
                         break;
                     case 5:
                         System.out.print("Ingrese el nombre a buscar: ");
@@ -65,6 +70,7 @@ public class Main {
                         } else {
                             System.out.println("Cliente no encontrado.");
                         }
+                        esperarRegreso();
                         break;
                     case 6:
                         System.out.print("Ingrese el scoring a buscar: ");
@@ -81,25 +87,38 @@ public class Main {
                             System.out.println("Scoring inválido.");
                             scanner.nextLine();
                         }
+                        esperarRegreso();
                         break;
                     case 7:
                         gestor.deshacerUltimaAccion();
+                        esperarRegreso();
                         break;
                     case 8:
                         gestor.imprimirLista();
+                        esperarRegreso();
                         break;
                     case 9:
+                        gestor.getHistorial().mostrarHistorial();
+                        esperarRegreso();
+                        break;
+                    case 10:
                         salir = true;
                         System.out.println("Saliendo del sistema.");
                         break;
                     default:
                         System.out.println("Ocurrió un error: Opción no válida.");
+                        esperarRegreso();
                 }
             } catch (NoSuchElementException e) {
                 System.out.println("Entrada finalizada inesperadamente. Saliendo.");
                 break;
             }
         }
+    }
+
+    private static void esperarRegreso() {
+        System.out.println("\n--> Presione ENTER para volver al menú principal...");
+        scanner.nextLine();
     }
 
 

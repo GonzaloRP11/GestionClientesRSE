@@ -6,7 +6,6 @@ package org.example;
 
 class App {
     public static void main(String[] args) {
-        // Clase delegadora para mantener compatibilidad con IDEs que esperan App
         Main.main(args);
     }
 }

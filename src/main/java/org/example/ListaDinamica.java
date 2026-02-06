@@ -69,6 +69,22 @@ public class ListaDinamica<T> {  // linked list
     public int getContador() {
         return contador;
     }
+
+    @Override
+    public String toString() {
+        if (primero == null) return "[]";
+        String resultado = "[";
+        Nodo<T> actual = primero;
+        while (actual != null) {
+            resultado += actual.getElemento();
+            if (actual.getSiguiente() != null) {
+                resultado += ", ";
+            }
+            actual = actual.getSiguiente();
+        }
+        resultado += "]";
+        return resultado;
+    }
 }
 
 class Nodo<T> {

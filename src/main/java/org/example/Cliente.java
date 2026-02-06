@@ -37,19 +37,36 @@ public class Cliente {
         conexiones.agregar(cliente);
     }
 
-    @Override
-    public String toString() {
-        return String.format(
-            "-----------------------------\n" +
-            "NOMBRE:    %s\n" +
-            "SCORING:   %d puntos\n" +
-            /*"SIGUIENDO: %s\n" +
-            "CONEXIONES: %s\n" +*/
-            "-----------------------------",
-            nombre, 
-            scoring/*, 
-            Arrays.toString(siguiendo), 
-            Arrays.toString(conexiones)*/
-        );
+        @Override
+
+        public String toString() {
+
+            return String.format(
+
+                "-----------------------------\n" +
+
+                "NOMBRE:     %s\n" +
+
+                "SCORING:    %d puntos\n" +
+
+                "SIGUIENDO:  %s\n" +
+
+                "CONEXIONES: %s\n" +
+
+                "-----------------------------",
+
+                nombre, 
+
+                scoring,
+
+                siguiendo.toString(),
+
+                conexiones.toString()
+
+            );
+
+        }
+
     }
-}
+
+    
