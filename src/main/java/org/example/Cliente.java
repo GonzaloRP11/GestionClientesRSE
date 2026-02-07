@@ -32,6 +32,15 @@ public class Cliente {
     public void seguir(String cliente) {
         siguiendo.agregar(cliente);
     }
+    public void dejarDeSeguir(String cliente) {
+        for (int i = 0; i < siguiendo.getContador(); i++) {
+            if (siguiendo.obtener(i).equalsIgnoreCase(cliente)) {
+                siguiendo.eliminar(i);
+                return;
+            }
+        }
+    }
+
 
     public void agregarConexion(String cliente) {
         conexiones.agregar(cliente);
@@ -55,7 +64,7 @@ public class Cliente {
 
                 "-----------------------------",
 
-                nombre, 
+                nombre,
 
                 scoring,
 
@@ -69,4 +78,3 @@ public class Cliente {
 
     }
 
-    
