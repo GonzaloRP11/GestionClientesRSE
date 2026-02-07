@@ -44,6 +44,15 @@ public class GestorClientes {
     }
 
     public void agregarCliente(String nombre, int scoring) {
+        if (scoring > 100) {
+            System.out.println("Error: El scoring no puede ser mayor a 100.");
+            return;
+        }
+
+        if (diccionarioPorNombre.contiene(nombre.toLowerCase())) {
+            System.out.println("Aviso: Ya existe un cliente con el nombre '" + nombre + "'. Se sobrescribirán sus datos.");
+        }
+
         Cliente c = new Cliente(nombre, scoring);
         agregarClienteAlSistema(c);
         historial.registrarAccion("AGREGAR", nombre + ";" + scoring);
@@ -77,6 +86,13 @@ public class GestorClientes {
 
         if (origen != null && destino != null) {
             origen.seguir(destino.getNombre());
+
+            if (destino.yaSigueA(origen.getNombre())) {
+                origen.agregarConexion(destino.getNombre());
+                destino.agregarConexion(origen.getNombre());
+                System.out.println("Conexión mutua entre " + origen.getNombre() + " y " + destino.getNombre() + "!");
+            }
+
             historial.registrarAccion("SOLICITUD_ACEPTADA", s.getOrigen() + ";" + s.getDestino());
             System.out.println("Solicitud aceptada.");
         }
@@ -107,10 +123,13 @@ public class GestorClientes {
                 break;
 
             case "SOLICITUD_ACEPTADA":
-                Cliente origen = buscarPorNombre(datos[0]);
-                if (origen != null) {
-                    origen.dejarDeSeguir(datos[1]);
-                    System.out.println("Deshecha aceptación de seguimiento.");
+                Cliente o = buscarPorNombre(datos[0]);
+                Cliente d = buscarPorNombre(datos[1]);
+                if (o != null && d != null) {
+                    o.dejarDeSeguir(d.getNombre());
+                    o.eliminarConexion(d.getNombre());
+                    d.eliminarConexion(o.getNombre());
+                    System.out.println("Deshecha aceptación de seguimiento y conexión.");
                 }
                 break;
         }
@@ -142,10 +161,28 @@ public class GestorClientes {
             if (json.has("clientes")) {
                 for (var c : json.getAsJsonArray("clientes")) {
                     var o = c.getAsJsonObject();
-                    agregarClienteAlSistema(new Cliente(
-                            o.get("nombre").getAsString(),
-                            o.get("scoring").getAsInt()
-                    ));
+                    String nombre = o.get("nombre").getAsString();
+                    int scoring = o.get("scoring").getAsInt();
+
+                    if (scoring <= 100) {
+                        Cliente nuevoCliente = new Cliente(nombre, scoring);
+                        
+                        if (o.has("siguiendo")) {
+                            for (var s : o.getAsJsonArray("siguiendo")) {
+                                nuevoCliente.seguir(s.getAsString());
+                            }
+                        }
+                        
+                        if (o.has("conexiones")) {
+                            for (var con : o.getAsJsonArray("conexiones")) {
+                                nuevoCliente.agregarConexion(con.getAsString());
+                            }
+                        }
+
+                        agregarClienteAlSistema(nuevoCliente);
+                    } else {
+                        System.out.println("Error al cargar " + nombre + ": scoring > 100");
+                    }
                 }
             }
             lector.close();

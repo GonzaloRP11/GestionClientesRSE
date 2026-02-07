@@ -32,22 +32,38 @@ public class Cliente {
     public void seguir(String cliente) {
         siguiendo.agregar(cliente);
     }
-    public void dejarDeSeguir(String cliente) {
-        for (int i = 0; i < siguiendo.getContador(); i++) {
-            if (siguiendo.obtener(i).equalsIgnoreCase(cliente)) {
-                siguiendo.eliminar(i);
-                return;
+        public void dejarDeSeguir(String cliente) {
+            for (int i = 0; i < siguiendo.getContador(); i++) {
+                if (siguiendo.obtener(i).equalsIgnoreCase(cliente)) {
+                    siguiendo.eliminar(i);
+                    return;
+                }
             }
         }
-    }
-
-
-    public void agregarConexion(String cliente) {
-        conexiones.agregar(cliente);
-    }
-
+    
+        public boolean yaSigueA(String nombre) {
+            for (int i = 0; i < siguiendo.getContador(); i++) {
+                if (siguiendo.obtener(i).equalsIgnoreCase(nombre)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    
+        public void agregarConexion(String cliente) {
+            conexiones.agregar(cliente);
+        }
+    
+        public void eliminarConexion(String cliente) {
+            for (int i = 0; i < conexiones.getContador(); i++) {
+                if (conexiones.obtener(i).equalsIgnoreCase(cliente)) {
+                    conexiones.eliminar(i);
+                    return;
+                }
+            }
+        }
+    
         @Override
-
         public String toString() {
 
             return String.format(

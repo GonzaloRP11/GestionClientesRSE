@@ -70,6 +70,17 @@ public class ListaDinamica<T> {  // linked list
         return contador;
     }
 
+    public boolean contiene(T elemento) {
+        Nodo<T> actual = primero;
+        while (actual != null) {
+            if (actual.getElemento().equals(elemento)) {
+                return true;
+            }
+            actual = actual.getSiguiente();
+        }
+        return false;
+    }
+
     @Override
     public String toString() {
         if (primero == null) return "[]";
