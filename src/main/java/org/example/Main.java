@@ -20,11 +20,11 @@ public class Main {
             System.out.println("========================================");
             System.out.println("1. Alta de Cliente");
             System.out.println("2. Baja de Cliente");
-            System.out.println("3. Enviar Solicitud de Seguimiento (Cola)");
+            System.out.println("3. Enviar Solicitud de Seguimiento");
             System.out.println("4. Procesar Siguiente Solicitud");
             System.out.println("5. Búsqueda de Cliente (Por Nombre)");
             System.out.println("6. Búsqueda de Cliente (Por Scoring)");
-            System.out.println("7. Deshacer Última Acción (Undo)");
+            System.out.println("7. Deshacer Última Acción");
             System.out.println("8. Ver Lista de Clientes");
             System.out.println("9. Ver Historial de Acciones");
             System.out.println("10. Salir");
