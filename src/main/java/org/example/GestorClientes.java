@@ -190,14 +190,6 @@ public class GestorClientes {
     public void imprimirLista() {
         diccionarioPorNombre.valores().imprimirLista();
     }
-    /*
-    public void imprimirListaSinSeguidores(ListaEstatica<String> aSeguir) 
-    {
-        
-        diccionarioPorNombre.valores().imprimirListaASeguir(aSeguir);
-
-    }
-     */
 
     public HistorialAcciones getHistorial() { return historial; }
 
