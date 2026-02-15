@@ -21,7 +21,8 @@ public class Main {
             System.out.println("1. Alta de Cliente");
             System.out.println("2. Baja de Cliente");
             System.out.println("3. Enviar Solicitud de Seguimiento");
-            System.out.println("4. Procesar Siguiente Solicitud");
+            //System.out.println("4. Procesar Siguiente Solicitud");
+            System.out.println("4. Procesar Solicitudes de Seguimiento por cliente");
             System.out.println("5. Búsqueda de Cliente (Por Nombre)");
             System.out.println("6. Búsqueda de Cliente (Por Scoring)");
             System.out.println("7. Deshacer Última Acción");
@@ -50,15 +51,64 @@ public class Main {
                         esperarRegreso();
                         break;
                     case 3:
+                        System.out.print("--> Le recordamos que puede seguir como máximo a dos clientes.\n");
+                        System.out.print("--> Si desea finalizar la carga de solicitudes ingrese la palabra 'terminar'.\n");
+
                         System.out.print("Nombre del cliente origen: ");
-                        String origen = scanner.nextLine();
-                        System.out.print("Nombre del cliente destino: ");
-                        String destino = scanner.nextLine();
-                        gestor.enviarSolicitudSeguimiento(origen, destino);
+                        String cliente = scanner.nextLine();
+                        Cliente clienteActual = gestor.buscarPorNombre(cliente);
+                        ListaEstatica<String> posiblesSeguidores = new ListaEstatica<>(2);
+                        
+                        while (clienteActual == null){
+                            System.out.print("--> El cliente ingresado no existe.\n");
+                            cliente = scanner.nextLine();
+                            clienteActual = gestor.buscarPorNombre(cliente);
+                        }
+
+                        if (!clienteActual.getSolicitudes().estaVacia())
+                        {
+                            System.out.print("--> El cliente ingresado ya tiene solicitudes encoladas.\n");
+                        }else
+                        {
+
+                            boolean seguir = true;
+                            String aSeguir = null;
+                            int contador = 0;
+                            while (seguir && contador<2)
+                            {
+                                //gestor.imprimirListaSinSeguidores(posiblesSeguidores);
+                                System.out.print("Nombre del cliente a seguir: ");
+                                aSeguir = scanner.nextLine();
+                                if (clienteActual.getSiguiendo().contiene(aSeguir)) 
+                                {
+                                    System.out.print("El cliente a seguir ya existe en seguidores.\n");
+                                    continue;
+                                }
+                                if (!aSeguir.equalsIgnoreCase("terminar")) {
+                                    clienteActual.aSeguir(aSeguir);
+                                    posiblesSeguidores.agregar(aSeguir);
+                                } else {
+                                    seguir = false;
+                                }
+                                contador++;
+                            }
+                            //gestor.agregarSolicitudes(clienteActual); // Llamamos al método agregarSolicitudes con el cliente actual
+                            gestor.enviarSolicitudSeguimiento(clienteActual, posiblesSeguidores);
+                        }
                         esperarRegreso();
                         break;
+
                     case 4:
-                        gestor.procesarSolicitudSeguimiento();
+                        System.out.print("Nombre del cliente a procesar: ");
+                        String cliente1 = scanner.nextLine();
+                        Cliente clienteActual1 = gestor.buscarPorNombre(cliente1);
+                        
+                        while (clienteActual1 == null){
+                            System.out.print("--> El cliente ingresado no existe.\n");
+                            cliente1 = scanner.nextLine();
+                            clienteActual1 = gestor.buscarPorNombre(cliente1);
+                        }
+                        gestor.procesarSolicitudSeguimiento(clienteActual1);
                         esperarRegreso();
                         break;
                     case 5:

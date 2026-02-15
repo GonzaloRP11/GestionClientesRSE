@@ -5,12 +5,15 @@ public class Cliente {
     private int scoring;
     private ListaDinamica<String> siguiendo;
     private ListaDinamica<String> conexiones;
+    private Cola<String> solicitudesASeguir;
+
 
     public Cliente(String nombre, int scoring) {
         this.nombre = nombre;
         this.scoring = scoring;
         this.siguiendo = new ListaDinamica<>();
         this.conexiones = new ListaDinamica<>();
+        this.solicitudesASeguir =  new Cola<>();
     }
 
     public String getNombre() {
@@ -29,17 +32,27 @@ public class Cliente {
         return conexiones;
     }
 
+    public Cola<String> getSolicitudes() {
+        return solicitudesASeguir;
+    }
+
     public void seguir(String cliente) {
         siguiendo.agregar(cliente);
     }
-        public void dejarDeSeguir(String cliente) {
-            for (int i = 0; i < siguiendo.getContador(); i++) {
-                if (siguiendo.obtener(i).equalsIgnoreCase(cliente)) {
-                    siguiendo.eliminar(i);
-                    return;
-                }
+
+    public void aSeguir(String cliente) {
+        solicitudesASeguir.encolar(cliente);
+    }
+
+
+    public void dejarDeSeguir(String cliente) {
+        for (int i = 0; i < siguiendo.getContador(); i++) {
+            if (siguiendo.obtener(i).equalsIgnoreCase(cliente)) {
+                siguiendo.eliminar(i);
+                return;
             }
         }
+    }
     
         public boolean yaSigueA(String nombre) {
             for (int i = 0; i < siguiendo.getContador(); i++) {
@@ -62,7 +75,7 @@ public class Cliente {
                 }
             }
         }
-    
+      
         @Override
         public String toString() {
 
@@ -87,7 +100,6 @@ public class Cliente {
                 siguiendo.toString(),
 
                 conexiones.toString()
-
             );
 
         }

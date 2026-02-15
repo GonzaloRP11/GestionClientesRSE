@@ -26,6 +26,32 @@ public class ListaDinamica<T> {  // linked list
         }
     }
 
+    public boolean compareNodes(Nodo<T> node1, Nodo<T> node2) 
+    {
+        return node1.getElemento().equals(node2.getElemento());
+    }
+
+
+    /* 
+    public void imprimirListaASeguir(ListaEstatica<String> lista) {
+        Nodo<T> actual = primero;
+        while (actual != null) {
+            if(lista.getContador() != 0)
+            {
+
+                actual.
+                if (!lista.equals(actual.getElemento())){
+                    System.out.println(actual.getElemento());
+                }
+            }else{
+                System.out.println(actual.getElemento());
+            }
+            actual = actual.getSiguiente();
+        }
+    }
+    */
+
+
     public T obtener(int indice) {
         Nodo<T> actual = primero;
         for (int i = 0; i < indice; i++) {

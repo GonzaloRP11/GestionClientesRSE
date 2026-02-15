@@ -68,12 +68,51 @@ public class GestorClientes {
 
     // ================== SOLICITUDES ==================
 
-    public void enviarSolicitudSeguimiento(String origen, String destino) {
+    public void enviarSolicitudSeguimiento(Cliente cliente,ListaEstatica<String> seguidores) {
+        
+        for (int i = 0; i < seguidores.getContador(); i++) {
+            //solicitudes.encolar(new SolicitudSeguimiento(cliente, seguidores.obtener(i)));
+            historial.registrarAccion("SOLICITUD_ENVIADA", cliente .getNombre()+ ";" + seguidores.obtener(i));
+            System.out.println("Solicitud enviada: " + cliente.getNombre() + " -> " + seguidores.obtener(i));
+        }
+    }
+
+    /* public void enviarSolicitudSeguimiento(String origen, String destino) {
         solicitudes.encolar(new SolicitudSeguimiento(origen, destino));
         historial.registrarAccion("SOLICITUD_ENVIADA", origen + ";" + destino);
         System.out.println("Solicitud enviada: " + origen + " -> " + destino);
     }
+    */
 
+    public void procesarSolicitudSeguimiento(Cliente cliente) {
+        if (cliente.getSolicitudes().estaVacia()) {
+            System.out.println("No hay solicitudes a procesar.");
+            return;
+        }
+
+        Cola<String> procesarSolicitudes = cliente.getSolicitudes();
+
+        while (!procesarSolicitudes.estaVacia())
+        {
+            String aSeguir = procesarSolicitudes.desencolar();
+            Cliente origen = buscarPorNombre(cliente.getNombre());
+            Cliente destino = buscarPorNombre(aSeguir);
+    
+            if (origen != null && destino != null) {
+                origen.seguir(destino.getNombre());
+    
+                if (destino.yaSigueA(origen.getNombre())) {
+                    origen.agregarConexion(destino.getNombre());
+                    destino.agregarConexion(origen.getNombre());
+                    System.out.println("Conexión mutua entre " + origen.getNombre() + " y " + destino.getNombre() + "!");
+                }
+    
+                historial.registrarAccion("SOLICITUD_ACEPTADA", cliente.getNombre() + ";" + destino.getNombre());
+                System.out.println("Solicitud aceptada.");
+            }
+        }
+    }
+    /*
     public void procesarSolicitudSeguimiento() {
         if (solicitudes.estaVacia()) {
             System.out.println("No hay solicitudes.");
@@ -97,6 +136,7 @@ public class GestorClientes {
             System.out.println("Solicitud aceptada.");
         }
     }
+    */
 
     // ================== DESHACER ==================
 
@@ -118,6 +158,7 @@ public class GestorClientes {
                 break;
 
             case "SOLICITUD_ENVIADA":
+                
                 solicitudes.desencolar(); // elimina la última enviada
                 System.out.println("Deshecho envío de solicitud.");
                 break;
@@ -149,6 +190,15 @@ public class GestorClientes {
     public void imprimirLista() {
         diccionarioPorNombre.valores().imprimirLista();
     }
+    /*
+    public void imprimirListaSinSeguidores(ListaEstatica<String> aSeguir) 
+    {
+        
+        diccionarioPorNombre.valores().imprimirListaASeguir(aSeguir);
+
+    }
+     */
+
     public HistorialAcciones getHistorial() { return historial; }
 
     // ================== JSON ==================
