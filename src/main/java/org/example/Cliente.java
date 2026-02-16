@@ -44,6 +44,10 @@ public class Cliente {
         solicitudesASeguir.encolar(cliente);
     }
 
+    public void dejarSeguir() {
+        solicitudesASeguir.desencolar();
+    }
+
 
     public void dejarDeSeguir(String cliente) {
         for (int i = 0; i < siguiendo.getContador(); i++) {

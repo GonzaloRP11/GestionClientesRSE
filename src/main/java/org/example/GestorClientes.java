@@ -159,7 +159,9 @@ public class GestorClientes {
 
             case "SOLICITUD_ENVIADA":
                 
-                solicitudes.desencolar(); // elimina la última enviada
+                //solicitudes.desencolar(); // elimina la última enviada
+                Cliente cliente = buscarPorNombre(datos[0]);
+                cliente.dejarSeguir();
                 System.out.println("Deshecho envío de solicitud.");
                 break;
 
