@@ -6,13 +6,11 @@ public class GestorClientes {
     private Diccionario<String, Cliente> diccionarioPorNombre;
     private Diccionario<Integer, ListaDinamica<Cliente>> diccionarioPorScoring;
     private HistorialAcciones historial;
-    private Cola<SolicitudSeguimiento> solicitudes;
 
     public GestorClientes() {
         diccionarioPorNombre = new Diccionario<>();
         diccionarioPorScoring = new Diccionario<>();
         historial = new HistorialAcciones();
-        solicitudes = new Cola<>();
         cargarDesdeJson();
     }
 
