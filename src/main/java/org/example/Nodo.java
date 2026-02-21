@@ -1,28 +1,15 @@
 package org.example;
 
 public class Nodo<T> {
+    private T elemento;
+    private Nodo<T> siguiente;
 
-   private T dato;
-   private Nodo<T> siguiente;
+    public Nodo(T elemento) {
+        this.elemento = elemento;
+        this.siguiente = null;
+    }
 
-   public Nodo(T dato) {
-       this.dato = dato;
-       this.siguiente = null;
-   }
-
-   public T getElemento() {
-       return dato;
-   }
-
-   public void setElemento(T dato) {
-       this.dato = dato;
-   }
-
-   public Nodo<T> getSiguiente() {
-       return siguiente;
-   }
-
-   public void setSiguiente(Nodo<T> siguiente) {
-       this.siguiente = siguiente;
-   }
+    public T getElemento() { return elemento; }
+    public Nodo<T> getSiguiente() { return siguiente; }
+    public void setSiguiente(Nodo<T> siguiente) { this.siguiente = siguiente; }
 }

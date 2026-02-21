@@ -4,129 +4,141 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Main {
+
     private static GestorClientes gestor = new GestorClientes();
     private static Scanner scanner = new Scanner(System.in);
-    public static void main(String[] args)
-    {
-        //Carga inicial de json
+
+    public static void main(String[] args) {
+
         System.out.println("Iniciando aplicación - Sistema de Gestión de Clientes");
-        //Mostrar menú de gestión
+
         boolean salir = false;
         int opcion;
+
         while (!salir) {
+
             System.out.println("\n========================================");
             System.out.println("       SISTEMA DE GESTIÓN DE CLIENTES    ");
             System.out.println("========================================");
             System.out.println("1. Alta de Cliente");
             System.out.println("2. Baja de Cliente");
             System.out.println("3. Enviar Solicitud de Seguimiento");
-            //System.out.println("4. Procesar Siguiente Solicitud");
             System.out.println("4. Procesar Solicitudes de Seguimiento por cliente");
             System.out.println("5. Búsqueda de Cliente (Por Nombre)");
             System.out.println("6. Búsqueda de Cliente (Por Scoring)");
             System.out.println("7. Deshacer Última Acción");
             System.out.println("8. Ver Lista de Clientes");
             System.out.println("9. Ver Historial de Acciones");
-            System.out.println("10. Salir");
+            System.out.println("10. Ver Clientes Nivel 4 (Seguimientos - BFS)");
+            System.out.println("11. Ver a quién sigue un cliente");
+            System.out.println("12. Salir");
             System.out.println("========================================");
+
             try {
+
                 System.out.print("Seleccione una opción: ");
+
                 if (!scanner.hasNextInt()) {
-                    System.out.println("Error: Por favor, ingrese un número válido.");
+                    System.out.println("Error: Ingrese un número válido.");
                     scanner.nextLine();
                     continue;
                 }
+
                 opcion = scanner.nextInt();
                 scanner.nextLine();
+
                 switch (opcion) {
+
                     case 1:
                         menuAlta();
                         esperarRegreso();
                         break;
+
                     case 2:
                         System.out.print("Nombre del cliente a dar de baja: ");
                         String nombreBaja = scanner.nextLine();
                         gestor.eliminarCliente(nombreBaja);
                         esperarRegreso();
                         break;
-                    case 3:
-                        System.out.print("--> Le recordamos que puede seguir como máximo a dos clientes.\n");
-                        System.out.print("--> Si desea finalizar la carga de solicitudes ingrese la palabra 'terminar'.\n");
 
+                    case 3:
                         System.out.print("Nombre del cliente origen: ");
                         String cliente = scanner.nextLine();
+
                         Cliente clienteActual = gestor.buscarPorNombre(cliente);
-                        ListaEstatica<String> posiblesSeguidores = new ListaEstatica<>(2);
-                        
-                        while (clienteActual == null){
-                            System.out.print("--> El cliente ingresado no existe.\n");
+
+                        while (clienteActual == null) {
+                            System.out.println("Cliente no existe. Ingrese nuevamente:");
                             cliente = scanner.nextLine();
                             clienteActual = gestor.buscarPorNombre(cliente);
                         }
 
-                        if (!clienteActual.getSolicitudes().estaVacia())
-                        {
-                            System.out.print("--> El cliente ingresado ya tiene solicitudes encoladas.\n");
-                        }else
-                        {
+                        if (!clienteActual.getSolicitudes().estaVacia()) {
+                            System.out.println("El cliente ya tiene solicitudes pendientes.");
+                        } else {
 
-                            boolean seguir = true;
-                            String aSeguir = null;
+                            ListaEstatica<String> posiblesSeguidores = new ListaEstatica<>(2);
                             int contador = 0;
-                            while (seguir && contador<2)
-                            {
-                                //gestor.imprimirListaSinSeguidores(posiblesSeguidores);
-                                System.out.print("Nombre del cliente a seguir: ");
-                                aSeguir = scanner.nextLine();
-                                if (clienteActual.getSiguiendo().contiene(aSeguir)) 
-                                {
-                                    System.out.print("El cliente a seguir ya existe en seguidores.\n");
-                                    continue;
+
+                            while (contador < 2) {
+
+                                System.out.print("Nombre del cliente a seguir (o 'terminar'): ");
+                                String aSeguir = scanner.nextLine();
+
+                                if (aSeguir.equalsIgnoreCase("terminar")) {
+                                    break;
                                 }
-                                if (!aSeguir.equalsIgnoreCase("terminar")) {
-                                    clienteActual.aSeguir(aSeguir);
-                                    posiblesSeguidores.agregar(aSeguir);
-                                } else {
-                                    seguir = false;
-                                }
+
+
+                                posiblesSeguidores.agregar(aSeguir);
                                 contador++;
                             }
-                            //gestor.agregarSolicitudes(clienteActual); // Llamamos al método agregarSolicitudes con el cliente actual
+
                             gestor.enviarSolicitudSeguimiento(clienteActual, posiblesSeguidores);
                         }
+
                         esperarRegreso();
                         break;
 
                     case 4:
                         System.out.print("Nombre del cliente a procesar: ");
-                        String cliente1 = scanner.nextLine();
-                        Cliente clienteActual1 = gestor.buscarPorNombre(cliente1);
-                        
-                        while (clienteActual1 == null){
-                            System.out.print("--> El cliente ingresado no existe.\n");
-                            cliente1 = scanner.nextLine();
-                            clienteActual1 = gestor.buscarPorNombre(cliente1);
+                        String nombreProcesar = scanner.nextLine();
+
+                        Cliente clienteProcesar = gestor.buscarPorNombre(nombreProcesar);
+
+                        while (clienteProcesar == null) {
+                            System.out.println("Cliente no existe. Ingrese nuevamente:");
+                            nombreProcesar = scanner.nextLine();
+                            clienteProcesar = gestor.buscarPorNombre(nombreProcesar);
                         }
-                        gestor.procesarSolicitudSeguimiento(clienteActual1);
+
+                        gestor.procesarSolicitudSeguimiento(clienteProcesar);
                         esperarRegreso();
                         break;
+
                     case 5:
                         System.out.print("Ingrese el nombre a buscar: ");
                         String nombreBusca = scanner.nextLine();
                         Cliente encontradoNom = gestor.buscarPorNombre(nombreBusca);
+
                         if (encontradoNom != null) {
                             System.out.println(encontradoNom);
                         } else {
                             System.out.println("Cliente no encontrado.");
                         }
+
                         esperarRegreso();
                         break;
+
                     case 6:
                         System.out.print("Ingrese el scoring a buscar: ");
+
                         if (scanner.hasNextInt()) {
                             int scoringBusca = scanner.nextInt();
                             scanner.nextLine();
+
                             ListaDinamica<Cliente> encontradosSc = gestor.buscarPorScoring(scoringBusca);
+
                             if (encontradosSc.getContador() > 0) {
                                 encontradosSc.imprimirLista();
                             } else {
@@ -136,30 +148,49 @@ public class Main {
                             System.out.println("Scoring inválido.");
                             scanner.nextLine();
                         }
+
                         esperarRegreso();
                         break;
+
                     case 7:
                         gestor.deshacerUltimaAccion();
                         esperarRegreso();
                         break;
+
                     case 8:
                         gestor.imprimirLista();
                         esperarRegreso();
                         break;
+
                     case 9:
                         gestor.getHistorial().mostrarHistorial();
                         esperarRegreso();
                         break;
+
                     case 10:
+                        gestor.imprimirClientesNivel4();
+                        esperarRegreso();
+                        break;
+
+                    case 11:
+                        System.out.print("Ingrese el nombre del cliente: ");
+                        String nombreConsulta = scanner.nextLine();
+                        gestor.imprimirSiguiendoDeCliente(nombreConsulta);
+                        esperarRegreso();
+                        break;
+
+                    case 12:
                         salir = true;
                         System.out.println("Saliendo del sistema.");
                         break;
+
                     default:
-                        System.out.println("Ocurrió un error: Opción no válida.");
+                        System.out.println("Opción no válida.");
                         esperarRegreso();
                 }
+
             } catch (NoSuchElementException e) {
-                System.out.println("Entrada finalizada inesperadamente. Saliendo.");
+                System.out.println("Entrada finalizada inesperadamente.");
                 break;
             }
         }
@@ -170,35 +201,22 @@ public class Main {
         scanner.nextLine();
     }
 
+    private static void menuAlta() {
 
-    private static void menuAlta()
-    {
-
-        System.out.println("Nombre: ");
-        if (!scanner.hasNextLine()) {
-            System.out.println("Entrada no disponible. Volviendo al menú.");
-            return;
-        }
+        System.out.print("Nombre: ");
         String nombre = scanner.nextLine();
 
-        System.out.println("Puntaje(0-100): ");
+        System.out.print("Puntaje (0-100): ");
+
         if (!scanner.hasNextInt()) {
-            System.out.println("Puntaje inválido. Volviendo al menú.");
+            System.out.println("Puntaje inválido.");
             scanner.nextLine();
             return;
         }
+
         int puntaje = scanner.nextInt();
         scanner.nextLine();
-        
-        gestor.agregarCliente(nombre, puntaje);
-        /*
-        System.out.print("Siguiendo (separados por coma): ");
-        String[] siguiendo = scanner.nextLine().split(",");
-        
-        System.out.print("Conexiones (separados por coma): ");
-        String[] conexiones = scanner.nextLine().split(",");
-         */
-        //gestor.agregarCliente(nombre, score);
 
+        gestor.agregarCliente(nombre, puntaje);
     }
 }
