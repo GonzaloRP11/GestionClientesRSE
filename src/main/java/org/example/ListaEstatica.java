@@ -35,7 +35,7 @@ public class ListaEstatica<T> {
         return contador;
     }
 }
-
+/*
 class Nodo<T> {
     private T elemento;
     private Nodo<T> siguiente;
@@ -61,3 +61,4 @@ class Nodo<T> {
         this.siguiente = siguiente;
     }
 }
+*/

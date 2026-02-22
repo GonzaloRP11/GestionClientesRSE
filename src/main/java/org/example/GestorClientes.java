@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.AVL.*;
+
 import com.google.gson.Gson;
 
 public class GestorClientes {
@@ -174,6 +176,45 @@ public class GestorClientes {
                 }
                 break;
         }
+    }
+
+    // ================== CARGAR ARBOL ==================
+    public void cargarClientesImprimirNivel4()
+    {
+        //AVL<Cliente> avl = new AVL<>();
+        ABB<Cliente> abb = new ABB<>();
+        ListaDinamica<Cliente> clientes = diccionarioPorNombre.valores();
+        
+        int indice = 0;
+        //clientes.imprimirLista();
+        while (indice < clientes.getContador())
+        {
+            Cliente cliente = clientes.obtener(indice);
+            if (clienteSigue(clientes, cliente)){
+                abb.insertar(cliente);
+                //avl.agregar(cliente);
+            }
+            indice++;
+        }   
+        //avl.imprimirPorNivel(4);
+        abb.imprimirPorNivel(4);
+    }
+
+    private Boolean clienteSigue(ListaDinamica<Cliente> lista,Cliente seguido)
+    {
+        Boolean sigue = false;
+        int indice = 0;
+        while(indice<lista.getContador())
+        {
+            if (lista.obtener(indice).getSiguiendo().contiene(seguido.getNombre()))
+            {
+                sigue = true;
+                return sigue;
+
+            }
+            indice++;
+        }
+        return sigue;
     }
 
     // ================== BUSQUEDAS ==================

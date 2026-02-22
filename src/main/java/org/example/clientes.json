@@ -51,6 +51,24 @@
       "conexiones": [
         "Charlie"
       ]
+    },
+    {
+      "nombre": "Frank",
+      "scoring": 70,
+      "siguiendo": ["Alice"],
+      "conexiones": ["Alice", "Bob", "Eve", "Grace"]
+    },
+    {
+      "nombre": "Grace",
+      "scoring": 65,
+      "siguiendo": ["Frank"],
+      "conexiones": ["Frank", "Alice"]
+    },
+    {
+      "nombre": "Heidi",
+      "scoring": 60,
+      "siguiendo": ["Grace"],
+      "conexiones": ["Grace", "Charlie", "David", "Frank", "Alice"]
     }
   ]
 }

@@ -123,7 +123,7 @@ public class ListaDinamica<T> {  // linked list
         return resultado;
     }
 }
-
+/*
 class Nodo<T> {
     private T elemento;
     private Nodo<T> siguiente;
@@ -149,3 +149,4 @@ class Nodo<T> {
         this.siguiente = siguiente;
     }
 }
+*/

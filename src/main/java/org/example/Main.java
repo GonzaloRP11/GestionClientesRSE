@@ -24,10 +24,11 @@ public class Main {
             System.out.println("4. Procesar Solicitudes de Seguimiento por cliente");
             System.out.println("5. Búsqueda de Cliente (Por Nombre)");
             System.out.println("6. Búsqueda de Cliente (Por Scoring)");
-            System.out.println("7. Deshacer Última Acción");
-            System.out.println("8. Ver Lista de Clientes");
-            System.out.println("9. Ver Historial de Acciones");
-            System.out.println("10. Salir");
+            System.out.println("7. Cargar e imprimir árbol por nivel");
+            System.out.println("8. Deshacer Última Acción");
+            System.out.println("9. Ver Lista de Clientes");
+            System.out.println("10. Ver Historial de Acciones");
+            System.out.println("11. Salir");
             System.out.println("========================================");
             try {
                 System.out.print("Seleccione una opción: ");
@@ -139,18 +140,22 @@ public class Main {
                         esperarRegreso();
                         break;
                     case 7:
-                        gestor.deshacerUltimaAccion();
+                        gestor.cargarClientesImprimirNivel4();
                         esperarRegreso();
                         break;
                     case 8:
-                        gestor.imprimirLista();
+                        gestor.deshacerUltimaAccion();
                         esperarRegreso();
                         break;
                     case 9:
-                        gestor.getHistorial().mostrarHistorial();
+                        gestor.imprimirLista();
                         esperarRegreso();
                         break;
                     case 10:
+                        gestor.getHistorial().mostrarHistorial();
+                        esperarRegreso();
+                        break;
+                    case 11:
                         salir = true;
                         System.out.println("Saliendo del sistema.");
                         break;

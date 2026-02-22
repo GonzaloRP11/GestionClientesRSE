@@ -1,6 +1,6 @@
 package org.example;
 
-public class Cliente {
+public class Cliente implements Comparable<Cliente> {
     private String nombre;
     private int scoring;
     private ListaDinamica<String> siguiendo;
@@ -107,6 +107,10 @@ public class Cliente {
             );
 
         }
+        public int compareTo(Cliente otroCliente) 
+        {
+            return this.nombre.compareTo(otroCliente.nombre);
+        } 
 
-    }
+}
 
