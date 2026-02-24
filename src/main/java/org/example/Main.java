@@ -29,9 +29,11 @@ public class Main {
             System.out.println("7. Deshacer Última Acción");
             System.out.println("8. Ver Lista de Clientes");
             System.out.println("9. Ver Historial de Acciones");
-            System.out.println("10. Ver Clientes Nivel 4 (Seguimientos - BFS)");
+            System.out.println("10. Visualizar Árbol de Seguimiento Completo");
             System.out.println("11. Ver a quién sigue un cliente");
-            System.out.println("12. Salir");
+            System.out.println("12. Cargar Caso de Prueba (Nivel 4)");
+            System.out.println("13. Visualizar Árbol por Scoring (AVL)");
+            System.out.println("14. Salir");
             System.out.println("========================================");
 
             try {
@@ -168,7 +170,7 @@ public class Main {
                         break;
 
                     case 10:
-                        gestor.imprimirClientesNivel4();
+                        gestor.visualizarArbolSeguimiento();
                         esperarRegreso();
                         break;
 
@@ -180,6 +182,16 @@ public class Main {
                         break;
 
                     case 12:
+                        gestor.cargarCasoPruebaNivel4();
+                        esperarRegreso();
+                        break;
+
+                    case 13:
+                        gestor.visualizarArbolScoring();
+                        esperarRegreso();
+                        break;
+
+                    case 14:
                         salir = true;
                         System.out.println("Saliendo del sistema.");
                         break;

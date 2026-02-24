@@ -1,6 +1,6 @@
 package org.example;
 
-public class ListaDinamica<T> {  // linked list
+public class ListaDinamica<T> {  
 
     private Nodo<T> primero;
     private Nodo<T> ultimo;
@@ -32,24 +32,7 @@ public class ListaDinamica<T> {  // linked list
     }
 
 
-    /* 
-    public void imprimirListaASeguir(ListaEstatica<String> lista) {
-        Nodo<T> actual = primero;
-        while (actual != null) {
-            if(lista.getContador() != 0)
-            {
-
-                actual.
-                if (!lista.equals(actual.getElemento())){
-                    System.out.println(actual.getElemento());
-                }
-            }else{
-                System.out.println(actual.getElemento());
-            }
-            actual = actual.getSiguiente();
-        }
-    }
-    */
+    
 
 
     public T obtener(int indice) {
@@ -123,4 +106,5 @@ public class ListaDinamica<T> {  // linked list
         return resultado;
     }
 }
+
 

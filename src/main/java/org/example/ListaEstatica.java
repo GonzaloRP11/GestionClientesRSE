@@ -10,11 +10,11 @@ public class ListaEstatica<T> {
     }
 
     public void insertar(int pos, T elemento) {
-        for (int i = contador; i > pos; i--) { // 1 
+        for (int i = contador; i > pos; i--) { 
             elementos[i] = elementos[i - 1];
         }
-        elementos[pos] = elemento; // 1
-        contador++; // 1
+        elementos[pos] = elemento; 
+        contador++; 
     }
 
     public void agregar(T elemento) {
@@ -35,4 +35,5 @@ public class ListaEstatica<T> {
         return contador;
     }
 }
+
 

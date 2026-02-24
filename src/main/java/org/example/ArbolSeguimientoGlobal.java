@@ -24,15 +24,15 @@ public class ArbolSeguimientoGlobal {
     public void construir(ListaDinamica<Cliente> clientes) {
         if (clientes == null || clientes.getContador() == 0) return;
 
-        // Índice nombre -> Cliente
+        
         for (int i = 0; i < clientes.getContador(); i++) {
             indiceClientes.agregar(clientes.obtener(i));
         }
 
-        // Raíz: primer cliente
+        
         raiz = getOrCreateNodo(clientes.obtener(0));
 
-        // Conectar relaciones siguiendo: máx 2 => izq/der
+        
         for (int i = 0; i < clientes.getContador(); i++) {
             Cliente a = clientes.obtener(i);
             NodoSeg na = getOrCreateNodo(a);
@@ -51,10 +51,42 @@ public class ArbolSeguimientoGlobal {
     }
 
     public void imprimirCuartoNivel() {
-        imprimirNivelBFS(4); // raíz=0 => nivel4=4 (si tu profe usa raíz=1, poné 3)
+        imprimirNivelBFS(4); 
     }
 
-    // BFS por niveles + visitados (evita ciclos)
+    public void imprimirVisual() {
+        if (raiz == null) {
+            System.out.println("Árbol vacío.");
+            return;
+        }
+        System.out.println("\nESTRUCTURA JERÁRQUICA DE SEGUIMIENTO (Raíz: " + raiz.dato.getNombre() + ")");
+        AVLRelaciones<String> visitados = new AVLRelaciones<>();
+        imprimirRecursivo(raiz, "", true, visitados, 0);
+    }
+
+    private void imprimirRecursivo(NodoSeg nodo, String prefijo, boolean esUltimo, AVLRelaciones<String> visitados, int nivel) {
+        if (nodo == null) return;
+
+        String nombreLower = nodo.dato.getNombre().toLowerCase();
+        boolean yaVisitado = visitados.buscar(nombreLower) != null;
+
+        System.out.print(prefijo);
+        System.out.print(esUltimo ? "└── " : "├── ");
+        System.out.println("[Nivel " + nivel + "] " + nodo.dato.getNombre() + (yaVisitado ? " (ciclo)" : ""));
+
+        if (yaVisitado) return;
+        visitados.agregar(nombreLower);
+
+        String nuevoPrefijo = prefijo + (esUltimo ? "    " : "│   ");
+
+        
+        if (nodo.izq != null || nodo.der != null) {
+            imprimirRecursivo(nodo.izq, nuevoPrefijo, nodo.der == null, visitados, nivel + 1);
+            imprimirRecursivo(nodo.der, nuevoPrefijo, true, visitados, nivel + 1);
+        }
+    }
+
+    
     public void imprimirNivelBFS(int objetivo) {
         if (raiz == null) return;
 
@@ -77,7 +109,7 @@ public class ArbolSeguimientoGlobal {
             if (nivel == objetivo) {
                 System.out.println(n.dato.getNombre());
                 imprimioAlgo = true;
-                continue; // no expandir desde este nivel
+                continue; 
             }
             if (nivel > objetivo) break;
 
