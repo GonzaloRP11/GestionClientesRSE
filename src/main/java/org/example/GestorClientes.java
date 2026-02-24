@@ -3,7 +3,8 @@ package org.example;
 import com.google.gson.Gson;
 
 public class GestorClientes {
-
+    
+    private GrafoDinamico grafoRelaciones; 
     private Diccionario<String, Cliente> diccionarioPorNombre;
     private Diccionario<Integer, ListaDinamica<Cliente>> diccionarioPorScoring;
 
@@ -12,9 +13,10 @@ public class GestorClientes {
     public GestorClientes() {
         diccionarioPorNombre = new Diccionario<>();
         diccionarioPorScoring = new Diccionario<>();
-
         historial = new HistorialAcciones();
+        grafoRelaciones = new GrafoDinamico(); 
         cargarDesdeJson();
+        cargarGrafoRelaciones();
     }
 
     // ================== CLIENTES ==================
@@ -280,9 +282,58 @@ public class GestorClientes {
             }
 
             lector.close();
-
+            cargarGrafoRelaciones();
         } catch (Exception e) {
             System.out.println("Error JSON");
         }
-    }
+        }
+        
+        public void cargarGrafoRelaciones() 
+        {
+            ListaDinamica<Cliente> clientes = diccionarioPorNombre.valores();
+            grafoRelaciones.cargarDesdeLista(clientes);
+            System.out.println("Impresión de grafo\n");
+            grafoRelaciones.imprimirGrafo();
+        }
+
+        public void imprimirVecinos(String nombre) 
+        {
+            Cliente cliente = buscarPorNombre(nombre);
+            if (cliente != null) {
+                ListaDinamica<Cliente> vecinos = grafoRelaciones.obtenerVecinos(cliente);
+                System.out.println("\n=== Vecinos de " + nombre + " ===");
+                if (vecinos.getContador() == 0) {
+                    System.out.println("  (Sin conexiones)");
+                } else {
+                    System.out.println("Total vecinos: " + vecinos.getContador());
+                    vecinos.imprimirLista();
+                }
+            } else {
+                System.out.println("Cliente no encontrado.");
+            }
+        }
+
+        public void imprimirDistancia(String nombre1, String nombre2) 
+        {
+            Cliente c1 = buscarPorNombre(nombre1);
+            Cliente c2 = buscarPorNombre(nombre2);
+            
+            if (c1 != null && c2 != null) {
+                int distancia = grafoRelaciones.calcularDistancia(c1, c2);
+                if (distancia == -1) {
+                    System.out.println("No hay camino entre " + nombre1 + " y " + nombre2);
+                } else {
+                    System.out.println("Distancia entre " + nombre1 + " y " + nombre2 + ": " + distancia + " saltos");
+                }
+            } else {
+                System.out.println("Uno o ambos clientes no existen.");
+            }
+        }
+
+        public void agregarRelacionClientes(String A,String B){
+            Cliente clienteA = diccionarioPorNombre.obtener(A);
+            Cliente clienteB = diccionarioPorNombre.obtener(B);
+            grafoRelaciones.agregarRelacion(clienteA, clienteB);
+        }
+    
 }

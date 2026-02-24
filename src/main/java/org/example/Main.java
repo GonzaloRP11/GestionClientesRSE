@@ -32,6 +32,12 @@ public class Main {
             System.out.println("10. Ver Clientes Nivel 4 (Seguimientos - BFS)");
             System.out.println("11. Ver a quién sigue un cliente");
             System.out.println("12. Salir");
+            System.out.println("14. Agregar relación");
+            System.out.println("15. Obtener vecinos de un cliente");
+            System.out.println("16. Calcular distancia entre dos clientes");
+
+
+
             System.out.println("========================================");
 
             try {
@@ -183,7 +189,67 @@ public class Main {
                         salir = true;
                         System.out.println("Saliendo del sistema.");
                         break;
+                    case 14:
+                        System.out.print("Nombre del cliente A: ");
+                        String nombreProcesarA = scanner.nextLine();
+                        Cliente clienteProcesarA = gestor.buscarPorNombre(nombreProcesarA);
 
+                        while (clienteProcesarA == null) {
+                            System.out.println("Cliente no existe. Ingrese nuevamente:");
+                            nombreProcesarA= scanner.nextLine();
+                            clienteProcesarA = gestor.buscarPorNombre(nombreProcesarA);
+                        }
+
+                        System.out.print("Nombre del cliente B: ");
+                        String nombreProcesarB = scanner.nextLine();
+                        Cliente clienteProcesarB = gestor.buscarPorNombre(nombreProcesarB);
+
+                        while (clienteProcesarB == null) {
+                            System.out.println("Cliente no existe. Ingrese nuevamente:");
+                            nombreProcesarB= scanner.nextLine();
+                            clienteProcesarB = gestor.buscarPorNombre(nombreProcesarB);
+                        }
+
+                        gestor.agregarRelacionClientes(nombreProcesarA, nombreProcesarB);
+                        esperarRegreso();
+                        break;
+                    case 15:
+                        System.out.print("Nombre del cliente a visualizar vecinos: ");
+                        String nombreProcesarV = scanner.nextLine();
+                        Cliente clienteProcesarV = gestor.buscarPorNombre(nombreProcesarV);
+
+                        while (clienteProcesarV == null) {
+                            System.out.println("Cliente no existe. Ingrese nuevamente:");
+                            nombreProcesarV= scanner.nextLine();
+                            clienteProcesarV = gestor.buscarPorNombre(nombreProcesarV);
+                        }
+                        gestor.imprimirVecinos(nombreProcesarV);
+                        esperarRegreso();
+                        break;
+                    case 16:
+                        System.out.print("Nombre del cliente A: ");
+                        String nombreProcesarDistaciaA = scanner.nextLine();
+                        Cliente clienteProcesarDistanciaA = gestor.buscarPorNombre(nombreProcesarDistaciaA);
+
+                        while (clienteProcesarDistanciaA == null) {
+                            System.out.println("Cliente no existe. Ingrese nuevamente:");
+                            nombreProcesarDistaciaA= scanner.nextLine();
+                            clienteProcesarDistanciaA = gestor.buscarPorNombre(nombreProcesarDistaciaA);
+                        }
+
+                        System.out.print("Nombre del cliente B: ");
+                        String nombreProcesarDistanciaB = scanner.nextLine();
+                        Cliente clienteProcesarDistanciaB = gestor.buscarPorNombre(nombreProcesarDistanciaB);
+
+                        while (clienteProcesarDistanciaB == null) {
+                            System.out.println("Cliente no existe. Ingrese nuevamente:");
+                            nombreProcesarDistanciaB= scanner.nextLine();
+                            clienteProcesarDistanciaB = gestor.buscarPorNombre(nombreProcesarDistanciaB);
+                        }
+
+                        gestor.imprimirDistancia(nombreProcesarDistaciaA, nombreProcesarDistanciaB);
+                        esperarRegreso();
+                        break;
                     default:
                         System.out.println("Opción no válida.");
                         esperarRegreso();
