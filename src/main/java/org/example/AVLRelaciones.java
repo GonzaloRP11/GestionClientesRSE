@@ -48,7 +48,7 @@ public class AVLRelaciones<T extends Comparable<T>> {
 
         int balance = getBalance(nodo);
 
-        // Rotaciones
+        
         if (balance > 1 && elemento.compareTo(nodo.getIzquierdo().getDato()) < 0)
             return rotarDerecha(nodo);
 
@@ -105,6 +105,29 @@ public class AVLRelaciones<T extends Comparable<T>> {
 
     public void imprimirNivel(int nivel) {
         arbol.imprimirPorNivel(nivel);
+    }
+
+    public void imprimirTodoElArbol() {
+        if (arbol.estaVacio()) {
+            System.out.println("Árbol vacío.");
+            return;
+        }
+        imprimirRecursivo(arbol.getRaiz(), "", true);
+    }
+
+    private void imprimirRecursivo(NodoAVL<T> nodo, String prefijo, boolean esUltimo) {
+        if (nodo == null) return;
+
+        System.out.print(prefijo);
+        System.out.print(esUltimo ? "└── " : "├── ");
+        System.out.println(nodo.getDato().toString());
+
+        String nuevoPrefijo = prefijo + (esUltimo ? "    " : "│   ");
+
+        if (nodo.getIzquierdo() != null || nodo.getDerecho() != null) {
+            imprimirRecursivo(nodo.getIzquierdo(), nuevoPrefijo, nodo.getDerecho() == null);
+            imprimirRecursivo(nodo.getDerecho(), nuevoPrefijo, true);
+        }
     }
 
     public boolean estaVacio() {

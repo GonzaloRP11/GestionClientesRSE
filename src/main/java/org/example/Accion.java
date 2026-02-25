@@ -32,3 +32,4 @@ public class Accion {
         return "[" + fechaHora.format(formatter) + "] " + tipo + ": " + detalle;
     }
 }
+

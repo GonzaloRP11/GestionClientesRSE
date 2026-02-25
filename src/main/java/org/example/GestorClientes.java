@@ -7,19 +7,21 @@ public class GestorClientes {
     private GrafoDinamico grafoRelaciones; 
     private Diccionario<String, Cliente> diccionarioPorNombre;
     private Diccionario<Integer, ListaDinamica<Cliente>> diccionarioPorScoring;
+    private AVLRelaciones<ClientePorScoring> arbolPorScoring;
 
     private HistorialAcciones historial;
 
     public GestorClientes() {
         diccionarioPorNombre = new Diccionario<>();
         diccionarioPorScoring = new Diccionario<>();
+        arbolPorScoring = new AVLRelaciones<>();
         historial = new HistorialAcciones();
         grafoRelaciones = new GrafoDinamico(); 
         cargarDesdeJson();
         cargarGrafoRelaciones();
     }
 
-    // ================== CLIENTES ==================
+    
 
     private void agregarClienteAlSistema(Cliente cliente) {
 
@@ -32,7 +34,8 @@ public class GestorClientes {
         }
         lista.agregar(cliente);
 
-
+        
+        arbolPorScoring.agregar(new ClientePorScoring(cliente));
     }
 
     private void eliminarClienteDelSistema(Cliente cliente) {
@@ -49,7 +52,8 @@ public class GestorClientes {
             }
         }
 
-        // ⚠ No eliminamos del AVL para simplificar (como hablamos)
+        
+        
     }
 
     public void agregarCliente(String nombre, int scoring) {
@@ -77,13 +81,13 @@ public class GestorClientes {
         }
     }
 
-    // ================== SOLICITUDES ==================
+    
 
     public void enviarSolicitudSeguimiento(Cliente cliente, ListaEstatica<String> seguidores) {
 
         for (int i = 0; i < seguidores.getContador(); i++) {
 
-            cliente.aSeguir(seguidores.obtener(i)); // 🔥 ahora sí encolamos
+            cliente.aSeguir(seguidores.obtener(i)); 
 
             historial.registrarAccion(
                     "SOLICITUD_ENVIADA",
@@ -137,7 +141,7 @@ public class GestorClientes {
         }
     }
 
-    // ================== DESHACER ==================
+    
 
     public void deshacerUltimaAccion() {
 
@@ -182,7 +186,7 @@ public class GestorClientes {
         }
     }
 
-    // ================== BUSQUEDAS ==================
+    
 
     public Cliente buscarPorNombre(String nombre) {
         return diccionarioPorNombre.obtener(nombre.toLowerCase());
@@ -220,11 +224,11 @@ public class GestorClientes {
         return historial;
     }
 
-    // ================== AVL ==================
+    
 
 
 
-    public void imprimirClientesNivel4() {
+    public void visualizarArbolSeguimiento() {
 
         ListaDinamica<Cliente> clientes = diccionarioPorNombre.valores();
 
@@ -236,13 +240,42 @@ public class GestorClientes {
         ArbolSeguimientoGlobal arbol = new ArbolSeguimientoGlobal();
         arbol.construir(clientes);
 
-        System.out.println("Clientes en nivel 4 (árbol global de seguimiento - BFS):");
-        arbol.imprimirCuartoNivel();
+        arbol.imprimirVisual();
     }
 
-    // ================== JSON ==================
+    public void visualizarArbolScoring() {
+        System.out.println("\nESTRUCTURA DEL ÁRBOL AVL (Ordenado por Scoring):");
+        arbolPorScoring.imprimirTodoElArbol();
+    }
 
-    private void cargarDesdeJson() {
+    public void cargarCasoPruebaNivel4() {
+        System.out.println("\n--- Cargando Caso de Prueba (Nivel 4) ---");
+        
+        
+        agregarCliente("Frank", 70);
+        agregarCliente("Gina", 60);
+
+        
+        Cliente david = buscarPorNombre("David");
+        Cliente frank = buscarPorNombre("Frank");
+        Cliente gina = buscarPorNombre("Gina");
+
+        if (david == null || frank == null || gina == null) {
+            System.out.println("Error: Asegúrese de que el archivo JSON tenga al cliente 'David'.");
+            return;
+        }
+
+        
+        if (!david.yaSigueA("Frank")) david.seguir("Frank");
+        if (!frank.yaSigueA("Gina")) frank.seguir("Gina");
+
+        System.out.println("Relaciones creadas: David -> Frank -> Gina");
+        System.out.println("Caso de prueba cargado con éxito.");
+    }
+
+    
+
+        private void cargarDesdeJson() {
 
         try {
 

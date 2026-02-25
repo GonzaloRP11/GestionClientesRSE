@@ -22,3 +22,4 @@ public class SolicitudSeguimiento {
         return origen + " -> " + destino;
     }
 }
+
