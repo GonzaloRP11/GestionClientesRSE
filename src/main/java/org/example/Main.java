@@ -31,10 +31,12 @@ public class Main {
             System.out.println("9. Ver Historial de Acciones");
             System.out.println("10. Ver Clientes Nivel 4 (Seguimientos - BFS)");
             System.out.println("11. Ver a quién sigue un cliente");
-            System.out.println("12. Salir");
-            System.out.println("14. Agregar relación");
-            System.out.println("15. Obtener vecinos de un cliente");
-            System.out.println("16. Calcular distancia entre dos clientes");
+            System.out.println("15. Imprimir grafo");
+            System.out.println("16. Agregar relación");
+            System.out.println("17. Obtener vecinos de un cliente");
+            System.out.println("18. Calcular distancia entre dos clientes");
+            System.out.println("19. Salir");
+
 
 
 
@@ -184,12 +186,7 @@ public class Main {
                         gestor.imprimirSiguiendoDeCliente(nombreConsulta);
                         esperarRegreso();
                         break;
-
-                    case 12:
-                        salir = true;
-                        System.out.println("Saliendo del sistema.");
-                        break;
-                    case 14:
+                    case 15:
                         System.out.print("Nombre del cliente A: ");
                         String nombreProcesarA = scanner.nextLine();
                         Cliente clienteProcesarA = gestor.buscarPorNombre(nombreProcesarA);
@@ -213,7 +210,10 @@ public class Main {
                         gestor.agregarRelacionClientes(nombreProcesarA, nombreProcesarB);
                         esperarRegreso();
                         break;
-                    case 15:
+                    case 16:
+                        gestor.imprimirGrafo();
+                        esperarRegreso();
+                    case 17:
                         System.out.print("Nombre del cliente a visualizar vecinos: ");
                         String nombreProcesarV = scanner.nextLine();
                         Cliente clienteProcesarV = gestor.buscarPorNombre(nombreProcesarV);
@@ -226,7 +226,7 @@ public class Main {
                         gestor.imprimirVecinos(nombreProcesarV);
                         esperarRegreso();
                         break;
-                    case 16:
+                    case 18:
                         System.out.print("Nombre del cliente A: ");
                         String nombreProcesarDistaciaA = scanner.nextLine();
                         Cliente clienteProcesarDistanciaA = gestor.buscarPorNombre(nombreProcesarDistaciaA);
@@ -249,6 +249,10 @@ public class Main {
 
                         gestor.imprimirDistancia(nombreProcesarDistaciaA, nombreProcesarDistanciaB);
                         esperarRegreso();
+                        break;
+                    case 19:
+                        salir = true;
+                        System.out.println("Saliendo del sistema.");
                         break;
                     default:
                         System.out.println("Opción no válida.");

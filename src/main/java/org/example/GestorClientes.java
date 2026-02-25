@@ -292,6 +292,9 @@ public class GestorClientes {
         {
             ListaDinamica<Cliente> clientes = diccionarioPorNombre.valores();
             grafoRelaciones.cargarDesdeLista(clientes);
+        }
+
+        public void imprimirGrafo(){
             System.out.println("Impresión de grafo\n");
             grafoRelaciones.imprimirGrafo();
         }
@@ -331,8 +334,8 @@ public class GestorClientes {
         }
 
         public void agregarRelacionClientes(String A,String B){
-            Cliente clienteA = diccionarioPorNombre.obtener(A);
-            Cliente clienteB = diccionarioPorNombre.obtener(B);
+            Cliente clienteA = diccionarioPorNombre.obtener(A.toLowerCase());
+            Cliente clienteB = diccionarioPorNombre.obtener(B.toLowerCase());
             grafoRelaciones.agregarRelacion(clienteA, clienteB);
         }
     

@@ -107,17 +107,17 @@ public class GrafoDinamico {
             return;
         }
         
-        System.out.println("=== Cargando Grafo de Relaciones ===");
-        System.out.println("Total clientes: " + clientes.getContador());
+        /*System.out.println("=== Cargando Grafo de Relaciones ===");
+        System.out.println("Total clientes: " + clientes.getContador());*/
         
-        // Paso 1: Agregar todos los vértices
+        // Agregar todos los vértices
         for (int i = 0; i < clientes.getContador(); i++) {
             agregarVertice(clientes.obtener(i));
         }
-        System.out.println("Vértices agregados: " + clientes.getContador());
+        //System.out.println("Vértices agregados: " + clientes.getContador());
         
-        // Paso 2: Agregar todas las conexiones (amistades)
-        int totalConexiones = 0;
+        //  Agregar todas las conexiones (amistades)
+        // int totalConexiones = 0;
         for (int i = 0; i < clientes.getContador(); i++) {
             Cliente cliente = clientes.obtener(i);
             ListaDinamica<String> conexiones = cliente.getConexiones();
@@ -128,13 +128,13 @@ public class GrafoDinamico {
                 
                 if (amigo != null) {
                     agregarRelacion(cliente, amigo);
-                    totalConexiones++;
+                    //totalConexiones++;
                 }
             }
         }
         
-        System.out.println("Conexiones agregadas: " + (totalConexiones / 2) + " (relaciones únicas)");
-        System.out.println("=== Grafo Cargado ===\n");
+        /*System.out.println("Conexiones agregadas: " + (totalConexiones / 2) + " (relaciones únicas)");
+        System.out.println("=== Grafo Cargado ===\n");*/
     }
     
     // Auxiliar: buscar cliente por nombre en la lista
@@ -178,7 +178,7 @@ public class GrafoDinamico {
     }
 
     public int calcularDistancia(Cliente origen, Cliente destino) {
-        // Caso especial: mismo cliente
+        //  mismo cliente
         if (origen.getNombre().equalsIgnoreCase(destino.getNombre())) {
             return 0;
         }
@@ -212,7 +212,7 @@ public class GrafoDinamico {
                     visitados.insertar(keyVecino, true);
                     distancias.insertar(keyVecino, distanciaActual + 1);
                     
-                    // ¿Encontramos el destino?
+                    
                     if (vecino.getNombre().equalsIgnoreCase(destino.getNombre())) {
                         return distanciaActual + 1;  // ← Distancia encontrada!
                     }
@@ -223,6 +223,6 @@ public class GrafoDinamico {
             }
         }
         
-        return -1;  // ← No hay camino entre los clientes
+        return -1;  //  No hay camino entre los clientes
     }
 }
