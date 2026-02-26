@@ -124,6 +124,8 @@ public class GestorClientes {
 
                     origen.agregarConexion(destino.getNombre());
                     destino.agregarConexion(origen.getNombre());
+                    
+                    grafoRelaciones.agregarRelacion(origen, destino);
 
                     System.out.println("Conexión mutua entre "
                             + origen.getNombre()
@@ -369,7 +371,16 @@ public class GestorClientes {
         public void agregarRelacionClientes(String A,String B){
             Cliente clienteA = diccionarioPorNombre.obtener(A.toLowerCase());
             Cliente clienteB = diccionarioPorNombre.obtener(B.toLowerCase());
-            grafoRelaciones.agregarRelacion(clienteA, clienteB);
+            
+            if (clienteA != null && clienteB != null) {
+                grafoRelaciones.agregarRelacion(clienteA, clienteB);
+                clienteA.agregarConexion(clienteB.getNombre());
+                clienteB.agregarConexion(clienteA.getNombre());
+                
+                System.out.println("Relación agregada exitosamente entre " + A + " y " + B);
+            } else {
+                System.out.println("Error: Uno o ambos clientes no existen.");
+            }
         }
     
 }

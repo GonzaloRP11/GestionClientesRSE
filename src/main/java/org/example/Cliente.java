@@ -40,7 +40,17 @@ public class Cliente implements Comparable<Cliente> {
         return false;
     }
 
-    public void agregarConexion(String cliente) { conexiones.agregar(cliente); }
+    public boolean tieneConexionCon(String nombre) {
+        for (int i = 0; i < conexiones.getContador(); i++)
+            if (conexiones.obtener(i).equalsIgnoreCase(nombre)) return true;
+        return false;
+    }
+
+    public void agregarConexion(String cliente) { 
+        if (!tieneConexionCon(cliente)) {
+            conexiones.agregar(cliente); 
+        }
+    }
     public void eliminarConexion(String cliente) {
         for (int i = 0; i < conexiones.getContador(); i++)
             if (conexiones.obtener(i).equalsIgnoreCase(cliente)) {
