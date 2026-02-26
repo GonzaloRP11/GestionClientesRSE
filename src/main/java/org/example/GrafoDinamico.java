@@ -65,6 +65,15 @@ public class GrafoDinamico {
         }
     }
 
+    public void agregarRelacionDirigida(Cliente origen, Cliente destino) {
+        NodoGrafo nodoO = buscarVertice(origen);
+        NodoGrafo nodoD = buscarVertice(destino);
+        
+        if (nodoO != null && nodoD != null) {
+            agregarAristaUnidireccional(nodoO, nodoD);
+        }
+    }
+
     private void agregarAristaUnidireccional(NodoGrafo origen, NodoGrafo destino) {
         if (!existeArista(origen, destino)) {
             NodoArista nuevaArista = new NodoArista();
@@ -116,19 +125,27 @@ public class GrafoDinamico {
         }
         //System.out.println("Vértices agregados: " + clientes.getContador());
         
-        //  Agregar todas las conexiones (amistades)
-        // int totalConexiones = 0;
+        //  Agregar todas las conexiones (seguimientos y amistades)
         for (int i = 0; i < clientes.getContador(); i++) {
             Cliente cliente = clientes.obtener(i);
-            ListaDinamica<String> conexiones = cliente.getConexiones();
             
+            // 1. Agregar seguidores (Relaciones dirigidas)
+            ListaDinamica<String> siguiendo = cliente.getSiguiendo();
+            for (int j = 0; j < siguiendo.getContador(); j++) {
+                Cliente destino = buscarClientePorNombre(siguiendo.obtener(j), clientes);
+                if (destino != null) {
+                    agregarRelacionDirigida(cliente, destino);
+                }
+            }
+
+            // 2. Asegurar conexiones mutuas (por si acaso no estaban en siguiendo)
+            ListaDinamica<String> conexiones = cliente.getConexiones();
             for (int j = 0; j < conexiones.getContador(); j++) {
                 String nombreAmigo = conexiones.obtener(j);
                 Cliente amigo = buscarClientePorNombre(nombreAmigo, clientes);
                 
                 if (amigo != null) {
                     agregarRelacion(cliente, amigo);
-                    //totalConexiones++;
                 }
             }
         }

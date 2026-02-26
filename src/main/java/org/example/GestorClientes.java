@@ -36,6 +36,9 @@ public class GestorClientes {
 
         
         arbolPorScoring.agregar(new ClientePorScoring(cliente));
+
+        // Registrar el cliente como vértice en el grafo para que pueda tener relaciones
+        grafoRelaciones.agregarVertice(cliente);
     }
 
     private void eliminarClienteDelSistema(Cliente cliente) {
@@ -119,6 +122,9 @@ public class GestorClientes {
             if (origen != null && destino != null) {
 
                 origen.seguir(destino.getNombre());
+                
+                // Reflejar el seguimiento en el grafo inmediatamente
+                grafoRelaciones.agregarRelacionDirigida(origen, destino);
 
                 if (destino.yaSigueA(origen.getNombre())) {
 
@@ -268,8 +274,14 @@ public class GestorClientes {
         }
 
         
-        if (!david.yaSigueA("Frank")) david.seguir("Frank");
-        if (!frank.yaSigueA("Gina")) frank.seguir("Gina");
+        if (!david.yaSigueA("Frank")) {
+            david.seguir("Frank");
+            grafoRelaciones.agregarRelacionDirigida(david, frank);
+        }
+        if (!frank.yaSigueA("Gina")) {
+            frank.seguir("Gina");
+            grafoRelaciones.agregarRelacionDirigida(frank, gina);
+        }
 
         System.out.println("Relaciones creadas: David -> Frank -> Gina");
         System.out.println("Caso de prueba cargado con éxito.");
